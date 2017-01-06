@@ -1,5 +1,6 @@
 from Tkinter import * #gives us access to everything in the Tkinter class
 import tkMessageBox
+from PIL import Image, ImageTk
 
 def buttonpress():
     entrytxt = entry1.get()
@@ -8,17 +9,31 @@ def buttonpress():
     
 def addtolist():
     entrytxt = entry1.get()
-    listbox1.insert(END, entrytxt)
-    
-    
+    if check4dup() == False:
+            listbox1.insert(END, entrytxt)
+            findsize()
+    entry1.delete(0,END)
+       
 def addtolist2(event):
     entrytxt = entry1.get()
-    listbox1.insert(END, entrytxt)
+    if check4dup() == False:
+        listbox1.insert(END, entrytxt)
+        findsize()
     entry1.delete(0, END)
-        
+     
 def clearlist(event):
     listbox1.delete(0, END)
+    findsize()
 
+def check4dup():
+    names = listbox1.get(0,END)
+    if entry1.get() in names:
+        return True
+    else:
+        return False
+        
+def findsize():
+    label1.config(text=listbox1.size())
 
 root = Tk() #gives us a blank canvas object to work with
 root.title("Gooey 'n Tink")
@@ -34,12 +49,21 @@ label1 = Label(root, text="Hello World", bg="pink", anchor=W)
 label1.grid(row=0, column=0, sticky=EW, columnspan=2)
 
 listbox1 = Listbox(root)
-listbox1.grid(row=2, column=0, sticky=EW, columnspan=2)
+listbox1.grid(row=2, column=0, sticky=EW, rowspan=10, columnspan=2)
 listbox1.bind("<Button-3>", clearlist)
 
 listbox1.insert(END, "Bob")
 listbox1.insert(END, "Joffrey")
 listbox1.insert(END, "Severus Snape")
 listbox1.insert(END, "Dudley")
+
+findsize()
+
+image = Image.open("bunny.jpg")
+photo = ImageTk.PhotoImage(image)
+
+label2 = Label(image=photo)
+label2.image = photo # keep a reference!
+label2.grid()
 
 mainloop() #causes the windows to display on the screen until program closes
