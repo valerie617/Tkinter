@@ -1,6 +1,10 @@
 from Tkinter import * #gives us access to everything in the Tkinter class
 import tkMessageBox
 from PIL import Image, ImageTk
+from datetime import datetime
+from threading import *
+
+
 
 def buttonpress():
     entrytxt = entry1.get()
@@ -46,7 +50,19 @@ def openfileW():
     
     
     f.close()
-    
+
+d= datetime.now()
+y = d.year
+h = d.hour
+
+def generate():
+    while(1):
+        print "Hello"
+        
+        
+thread1 = Thread(target=generate)
+#thread1.start()
+        
 
 root = Tk() #gives us a blank canvas object to work with
 root.title("Gooey 'n Tink")
@@ -61,7 +77,11 @@ entry1.bind("<Return>", addtolist2)
 label1 = Label(root, text="Hello World", bg="pink", anchor=W)
 label1.grid(row=0, column=0, sticky=EW, columnspan=2)
 
-listbox1 = Listbox(root)
+
+scrollbar = Scrollbar(root, orient=VERTICAL)
+listbox1 = Listbox(root, yscrollcommand=scrollbar.set)
+scrollbar.config(command=listbox1.yview)
+scrollbar.grid(row=2, column=2, rowspan=10, sticky=NS)
 listbox1.grid(row=2, column=0, sticky=EW, rowspan=10, columnspan=2)
 listbox1.bind("<Button-3>", clearlist)
 
